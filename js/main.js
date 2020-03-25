@@ -28,9 +28,10 @@
   const headline = document.querySelector('.headline-date');
   let now = getNowDate();
   headline.innerText = now.pointTitle;
+  headline.classList.remove('headline-date--hidden');
 
   /* ------------------------------ */
-  /* User Interface                 */
+  /* User Interfaces                */
   /* ------------------------------ */
   // -- Button function - Use point
   const pointBtn = document.querySelector('.point__btn');
@@ -40,5 +41,9 @@
         lastlifeIcon = lastlife.querySelector('.point__icon');
     lastlife.classList.add('point__life--used');
     lastlifeIcon.style.display = 'none';
+    now = getNowDate();
+    const usedText = '前回は' + now.nowDate + 'に使用しました。',
+          lastUsed = document.querySelector('.point__last-used');
+    lastUsed.innerText = usedText;
   });
 }

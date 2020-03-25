@@ -20,9 +20,19 @@
           };
     return returnDate;
   }
-  /*
-   * Button function - Use point
-   */
+
+  /* ------------------------------ */
+  /* First Preview Settings         */
+  /* ------------------------------ */
+  // -- Set headline
+  const headline = document.querySelector('.headline-date');
+  let now = getNowDate();
+  headline.innerText = now.pointTitle;
+
+  /* ------------------------------ */
+  /* User Interface                 */
+  /* ------------------------------ */
+  // -- Button function - Use point
   const pointBtn = document.querySelector('.point__btn');
   pointBtn.addEventListener('click', () => {
     let life = document.querySelectorAll('.point__life:not(.point__life--used)'),

@@ -1,6 +1,25 @@
 'use strict';
 
 {
+  /* ------------------------------ */
+  /* Functions                      */
+  /* ------------------------------ */
+  // -- Return Now Date
+  const getNowDate = () => {
+    const nd = new Date(),
+          ndYear = nd.getFullYear(),
+          ndMonth = nd.getMonth() + 1,
+          ndMonth2dig = ('0' + ndMonth).slice(-2),
+          ndDay2dig = ('0' + nd.getDate()).slice(-2),
+          ndHour2dig = ('0' + nd.getHours()).slice(-2),
+          ndMinutes2dig = ('0' + nd.getMinutes()).slice(-2),
+          ndSeconds2dig = ('0' + nd.getSeconds()).slice(-2),
+          returnDate = {
+            pointTitle: ndYear + '年' + ndMonth + '月',
+            nowDate: ndYear + '-' + ndMonth2dig + '-' + ndDay2dig + ' ' + ndHour2dig + ':' + ndMinutes2dig + ':' + ndSeconds2dig
+          };
+    return returnDate;
+  }
   /*
    * Button function - Use point
    */

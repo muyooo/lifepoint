@@ -27,10 +27,15 @@ body {
   display: flex;
   padding: 0;
   margin-bottom: 1.6rem;
+  height: 5.2rem;
 }
 .point__life {
   margin-right: 2rem;
-  width: 4.0rem;
+  width: 4rem;
+}
+.point__life--used:after {
+  content: "・";
+  font-size: 3rem;
 }
 .point__icon {
   width: 100%;

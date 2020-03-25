@@ -19,6 +19,9 @@ body {
 .headline-date {
   font-size: 2rem;
 }
+.headline-date--hidden {
+  visibility: hidden;
+}
 .point__title {
   font-size: 2rem;
 }

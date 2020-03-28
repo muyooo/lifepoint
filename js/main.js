@@ -33,9 +33,26 @@
   let now = getNowDate();
   headline.innerText = now.pointTitle;
   headline.classList.remove('headline-date--hidden');
+  // -- LocalStrage process
+  try {
+    // -- Reproduce current point
+    const maxBeerPoint = 2,
+          nowBeerPointNum = localStorage.getItem('restPoint') == null ? maxBeerPoint : localStorage.getItem('restPoint'),
+          lostBeerPointNum = maxBeerPoint - nowBeerPointNum,
+          beerPointObj = document.querySelectorAll('.point__life');
+    for(let i = 1; i <= lostBeerPointNum; i++) {
+      const targetBeerPointObj = beerPointObj[maxBeerPoint - i],
+            targetBeerIcon = targetBeerPointObj.querySelector('.point__icon');
+      targetBeerPointObj.classList.add('point__life--used');
+      targetBeerIcon.style.display = 'none';
+    }
+  } catch(e) {
+    alert('localStrage未対応のブラウザのため、ポイントの使用状況が保存されません。');
+    console.log('Error:' + e);
+  }
 
   /* ------------------------------ */
-  /* User Interfaces                */
+  /* User Interaction               */
   /* ------------------------------ */
   // -- Button function - Use point
   const pointBtn = document.querySelector('.point__btn');
@@ -49,5 +66,7 @@
     const usedText = '前回は' + now.nowDate + 'に使用しました。',
           lastUsed = document.querySelector('.point__last-used');
     lastUsed.innerText = usedText;
+    const restPoint = localStorage.getItem('restPoint') - 1;
+    localStorage.setItem('restPoint', restPoint);
   });
 }

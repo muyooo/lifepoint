@@ -33,7 +33,7 @@
   let now = getNowDate();
   headline.innerText = now.pointTitle;
   headline.classList.remove('headline-date--hidden');
-  // -- LocalStrage process
+  // -- LocalStrage
   try {
     // -- Reproduce current point
     const maxBeerPoint = 2,
@@ -46,6 +46,10 @@
       targetBeerPointObj.classList.add('point__life--used');
       targetBeerIcon.style.display = 'none';
     }
+    // -- Reproduce last used time
+    const lastUsedTime = localStorage.getItem('usedTime'),
+          lastUsedObj = document.querySelector('.point__last-used');
+    lastUsedObj.innerText = lastUsedTime;
   } catch(e) {
     alert('localStrage未対応のブラウザのため、ポイントの使用状況が保存されません。');
     console.log('Error:' + e);
@@ -66,6 +70,7 @@
     const usedText = '前回は' + now.nowDate + 'に使用しました。',
           lastUsed = document.querySelector('.point__last-used');
     lastUsed.innerText = usedText;
+    localStorage.setItem('usedTime', usedText);
     const restPoint = localStorage.getItem('restPoint') - 1;
     localStorage.setItem('restPoint', restPoint);
   });

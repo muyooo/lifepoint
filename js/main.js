@@ -20,6 +20,7 @@
           ndSeconds2dig = get2Digits(nd.getSeconds()),
           returnDate = {
             pointTitle: ndYear + '年' + ndMonth + '月',
+            yearMonthForCompare: ndYear + ndMonth2dig.toString(),
             nowDate: ndYear + '-' + ndMonth2dig + '-' + ndDay2dig + ' ' + ndHour2dig + ':' + ndMinutes2dig + ':' + ndSeconds2dig
           };
     return returnDate;
@@ -34,9 +35,17 @@
   headline.innerText = now.pointTitle;
   // -- LocalStrage
   try {
-    // -- Reproduce current point
+    // -- Recovery point
     const maxBeerPoint = 2,
-          nowBeerPointNum = localStorage.getItem('restPoint') == null ? maxBeerPoint : localStorage.getItem('restPoint'),
+          lastLoginYM = localStorage.getItem('lastLoginYM'),
+          loginYM = now.yearMonthForCompare;
+    if (lastLoginYM && loginYM > lastLoginYM) {
+      localStorage.setItem('restPoint', maxBeerPoint);
+      alert('月が変わったのでポイントが回復しました。');
+    }
+    localStorage.setItem('lastLoginYM', loginYM);
+    // -- Reproduce current point
+    const nowBeerPointNum = localStorage.getItem('restPoint') == null ? maxBeerPoint : localStorage.getItem('restPoint'),
           lostBeerPointNum = maxBeerPoint - nowBeerPointNum,
           beerPointObj = document.querySelectorAll('.point__life');
     for(let i = 1; i <= lostBeerPointNum; i++) {

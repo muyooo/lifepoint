@@ -16,11 +16,11 @@ body {
   width: 37.5rem;
   margin: 0 auto;
 }
+.points--hidden {
+  visibility: hidden;
+}
 .headline-date {
   font-size: 2rem;
-}
-.headline-date--hidden {
-  visibility: hidden;
 }
 .point__title {
   font-size: 2rem;

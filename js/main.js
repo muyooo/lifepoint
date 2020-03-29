@@ -32,7 +32,6 @@
   const headline = document.querySelector('.headline-date');
   let now = getNowDate();
   headline.innerText = now.pointTitle;
-  headline.classList.remove('headline-date--hidden');
   // -- LocalStrage
   try {
     // -- Reproduce current point
@@ -54,6 +53,9 @@
     alert('localStrage未対応のブラウザのため、ポイントの使用状況が保存されません。');
     console.log('Error:' + e);
   }
+  // -- Hidden contents preview
+  const pointSection = document.querySelector('.points');
+  pointSection.classList.remove('points--hidden');
 
   /* ------------------------------ */
   /* User Interaction               */

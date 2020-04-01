@@ -23,6 +23,14 @@ body {
   font-size: 2rem;
   margin-bottom: 2rem;
 }
+.point {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 0.1rem dashed #bebecd;
+}
+.point--last {
+  border: none;
+}
 .point__title {
   font-size: 2rem;
   margin-bottom: 2rem;
@@ -49,7 +57,7 @@ body {
   font-size: 1.4rem;
   display: inline-block;
   margin-right: 1rem;
-  padding: 0.3rem 1.6rem;
+  padding: 0.6rem 1.6rem;
   border: 0.1rem solid #bebecd;
   border-radius: .8rem;
   user-select: none;

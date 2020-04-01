@@ -1,4 +1,4 @@
-@charset "utf-8";
+  @charset "utf-8";
 html {
   font-size: 62.5%;
   font-family: 
@@ -14,16 +14,18 @@ body {
 
 .points {
   width: 37.5rem;
-  margin: 0 auto;
+  margin: 2rem auto 0;
 }
 .points--hidden {
   visibility: hidden;
 }
 .headline-date {
   font-size: 2rem;
+  margin-bottom: 2rem;
 }
 .point__title {
   font-size: 2rem;
+  margin-bottom: 2rem;
 }
 .point__list {
   list-style: none;

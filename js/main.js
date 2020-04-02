@@ -45,7 +45,7 @@
             const result = {
               type: types[i].name,
               maxPoint: types[i].maxPoint,
-              restPoint: types[i] + 'RestPoint'
+              restPoint: types[i].name + 'RestPoint'
             };
             return result;
           };
@@ -60,14 +60,27 @@
       alert('月が変わったのでポイントが回復しました。');
     }
     // -- Reproduce current point
-    const nowBeerPointNum = localStorage.getItem('restPoint') == null ? maxBeerPoint : localStorage.getItem('restPoint'),
-          lostBeerPointNum = maxBeerPoint - nowBeerPointNum,
-          beerPointObj = document.querySelectorAll('.point__life');
-    for(let i = 1; i <= lostBeerPointNum; i++) {
-      const targetBeerPointObj = beerPointObj[maxBeerPoint - i],
-            targetBeerIcon = targetBeerPointObj.querySelector('.point__icon');
-      targetBeerPointObj.classList.add('point__life--used');
-      targetBeerIcon.style.display = 'none';
+    for(let i = 0; i < typesLen; i++) {
+      const target = getTypeSettings(i),
+            nowTargetPointNum = localStorage.getItem(target.restPoint) == null ? target.maxPoint : localStorage.getItem(target.restPoint),
+            lostTargetPointNum = target.maxPoint - nowTargetPointNum,
+            targetPointSection = (() => {
+              const pointSections = document.querySelectorAll('.point'),
+                    pointSectionsLen = pointSections.length;
+              for(let i = 0; i < pointSectionsLen; i++) {
+                const pointSectionType = pointSections[i].getAttribute('data-type');
+                if(pointSectionType == target.type) {
+                  return pointSections[i];
+                }
+              }
+            })(),
+            targetPointObjects = targetPointSection.querySelectorAll('.point__life');
+      for(let i_ = 1; i_ <= lostTargetPointNum; i_++) {
+        const targetPointObj = targetPointObjects[target.maxPoint - i_],
+              targetPointIcon = targetPointObj.querySelector('.point__icon');
+        targetPointObj.classList.add('point__life--used');
+        targetPointIcon.style.display = 'none';
+      }
     }
     // -- Reproduce last used time
     const lastUsedTime = localStorage.getItem('usedTime'),

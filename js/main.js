@@ -35,15 +35,30 @@
   headline.innerText = now.pointTitle;
   // -- LocalStrage
   try {
+    // -- LocalStrage settings
+    const types = [
+            {name: 'beer', maxPoint: 2},
+            {name: 'eatout', maxPoint: 4}
+          ],
+          typesLen = types.length,
+          getTypeSettings = (i) => {
+            const result = {
+              type: types[i].name,
+              maxPoint: types[i].maxPoint,
+              restPoint: types[i] + 'RestPoint'
+            };
+            return result;
+          };
     // -- Recovery point
-    const maxBeerPoint = 2,
-          lastLoginYM = localStorage.getItem('lastLoginYM'),
+    const lastLoginYM = localStorage.getItem('lastLoginYM'),
           loginYM = now.yearMonthForCompare;
     if (lastLoginYM && loginYM > lastLoginYM) {
-      localStorage.setItem('restPoint', maxBeerPoint);
+      for(let i = 0; i < typesLen; i++) {
+        const target = getTypeSettings(i);
+        localStorage.setItem(target.restPoint, target.maxPoint);
+      }
       alert('月が変わったのでポイントが回復しました。');
     }
-    localStorage.setItem('lastLoginYM', loginYM);
     // -- Reproduce current point
     const nowBeerPointNum = localStorage.getItem('restPoint') == null ? maxBeerPoint : localStorage.getItem('restPoint'),
           lostBeerPointNum = maxBeerPoint - nowBeerPointNum,

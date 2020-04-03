@@ -60,6 +60,7 @@
       }
       alert('月が変わったのでポイントが回復しました。');
     }
+    localStorage.setItem('lastLoginYM', loginYM);
     for(let i = 0; i < typesLen; i++) {
       // -- Redisplay current point
       const target = getTypeSettings(i),
@@ -85,6 +86,7 @@
       // -- Redisplay last used time
       const lastUsed = localStorage.getItem(target.lastUsed),
             lastUsedObj = targetPointSection.querySelector('.point__last-used');
+      console.log(target.lastUsed);
       lastUsedObj.innerText = lastUsed;
     }
   } catch(e) {
@@ -99,23 +101,31 @@
   /* User Interaction               */
   /* ------------------------------ */
   // -- Button function - Use point
-  const pointBtn = document.querySelector('.point__btn');
-  pointBtn.addEventListener('click', () => {
-    let life = document.querySelectorAll('.point__life:not(.point__life--used)');
-    if (life.length == 0) {
-      alert('残りポイントがありません。');
-      return;
-    }
-    let lastlife = life[life.length - 1],
-        lastlifeIcon = lastlife.querySelector('.point__icon');
-    lastlife.classList.add('point__life--used');
-    lastlifeIcon.style.display = 'none';
-    now = getNowDate();
-    const usedText = '前回は' + now.nowDate + 'に使用しました。',
-          lastUsed = document.querySelector('.point__last-used');
-    lastUsed.innerText = usedText;
-    localStorage.setItem('usedTime', usedText);
-    const restPoint = localStorage.getItem('restPoint') - 1;
-    localStorage.setItem('restPoint', restPoint);
-  });
+  const pointBtns = document.querySelectorAll('.point__btn'),
+        pointBtnsLen = pointBtns.length;
+  for(let i = 0; i < pointBtnsLen; i++) {
+    pointBtns[i].addEventListener('click', () => {
+      const targetPoint = document.querySelectorAll('.point')[i],
+            life = targetPoint.querySelectorAll('.point__life:not(.point__life--used)'),
+            lifeLen = life.length;
+      if (lifeLen == 0) {
+        alert('残りポイントがありません。');
+        return;
+      }
+      let lastlife = life[lifeLen - 1],
+          lastlifeIcon = lastlife.querySelector('.point__icon');
+      lastlife.classList.add('point__life--used');
+      lastlifeIcon.style.display = 'none';
+      now = getNowDate();
+      const usedText = '前回は' + now.nowDate + 'に使用しました。',
+            targetLastUsed = targetPoint.querySelector('.point__last-used'),
+            targetType = targetPoint.getAttribute('data-type'),
+            targetRestPoint = targetType + 'RestPoint',
+            targetUsedTime = targetType + 'LastUsed';
+      targetLastUsed.innerText = usedText;
+      localStorage.setItem(targetUsedTime, usedText);
+      const restPoint = localStorage.getItem(targetRestPoint) - 1;
+      localStorage.setItem(targetRestPoint, restPoint);
+    });
+  }
 }

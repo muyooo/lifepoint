@@ -45,7 +45,8 @@
             const result = {
               type: types[i].name,
               maxPoint: types[i].maxPoint,
-              restPoint: types[i].name + 'RestPoint'
+              restPoint: types[i].name + 'RestPoint',
+              lastUsed: types[i].name + 'LastUsed'
             };
             return result;
           };
@@ -59,8 +60,8 @@
       }
       alert('月が変わったのでポイントが回復しました。');
     }
-    // -- Reproduce current point
     for(let i = 0; i < typesLen; i++) {
+      // -- Redisplay current point
       const target = getTypeSettings(i),
             nowTargetPointNum = localStorage.getItem(target.restPoint) == null ? target.maxPoint : localStorage.getItem(target.restPoint),
             lostTargetPointNum = target.maxPoint - nowTargetPointNum,
@@ -81,16 +82,16 @@
         targetPointObj.classList.add('point__life--used');
         targetPointIcon.style.display = 'none';
       }
+      // -- Redisplay last used time
+      const lastUsed = localStorage.getItem(target.lastUsed),
+            lastUsedObj = targetPointSection.querySelector('.point__last-used');
+      lastUsedObj.innerText = lastUsed;
     }
-    // -- Reproduce last used time
-    const lastUsedTime = localStorage.getItem('usedTime'),
-          lastUsedObj = document.querySelector('.point__last-used');
-    lastUsedObj.innerText = lastUsedTime;
   } catch(e) {
     alert('localStrage未対応のブラウザのため、ポイントの使用状況が保存されません。');
     console.log('Error:' + e);
   }
-  // -- Hidden contents preview
+  // -- Preview hidden contents
   const pointSection = document.querySelector('.points');
   pointSection.classList.remove('points--hidden');
 

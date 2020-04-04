@@ -35,34 +35,65 @@
   headline.innerText = now.pointTitle;
   // -- LocalStrage
   try {
+    // -- LocalStrage settings
+    const types = [
+            {name: 'beer', maxPoint: 2},
+            {name: 'eatout', maxPoint: 4}
+          ],
+          typesLen = types.length,
+          getTypeSettings = (i) => {
+            const result = {
+              type: types[i].name,
+              maxPoint: types[i].maxPoint,
+              restPoint: types[i].name + 'RestPoint',
+              lastUsed: types[i].name + 'LastUsed'
+            };
+            return result;
+          };
     // -- Recovery point
-    const maxBeerPoint = 2,
-          lastLoginYM = localStorage.getItem('lastLoginYM'),
+    const lastLoginYM = localStorage.getItem('lastLoginYM'),
           loginYM = now.yearMonthForCompare;
     if (lastLoginYM && loginYM > lastLoginYM) {
-      localStorage.setItem('restPoint', maxBeerPoint);
+      for(let i = 0; i < typesLen; i++) {
+        const target = getTypeSettings(i);
+        localStorage.setItem(target.restPoint, target.maxPoint);
+      }
       alert('月が変わったのでポイントが回復しました。');
     }
     localStorage.setItem('lastLoginYM', loginYM);
-    // -- Reproduce current point
-    const nowBeerPointNum = localStorage.getItem('restPoint') == null ? maxBeerPoint : localStorage.getItem('restPoint'),
-          lostBeerPointNum = maxBeerPoint - nowBeerPointNum,
-          beerPointObj = document.querySelectorAll('.point__life');
-    for(let i = 1; i <= lostBeerPointNum; i++) {
-      const targetBeerPointObj = beerPointObj[maxBeerPoint - i],
-            targetBeerIcon = targetBeerPointObj.querySelector('.point__icon');
-      targetBeerPointObj.classList.add('point__life--used');
-      targetBeerIcon.style.display = 'none';
+    for(let i = 0; i < typesLen; i++) {
+      // -- Redisplay current point
+      const target = getTypeSettings(i),
+            nowTargetPointNum = localStorage.getItem(target.restPoint) == null ? target.maxPoint : localStorage.getItem(target.restPoint),
+            lostTargetPointNum = target.maxPoint - nowTargetPointNum,
+            targetPointSection = (() => {
+              const pointSections = document.querySelectorAll('.point'),
+                    pointSectionsLen = pointSections.length;
+              for(let i = 0; i < pointSectionsLen; i++) {
+                const pointSectionType = pointSections[i].getAttribute('data-type');
+                if(pointSectionType == target.type) {
+                  return pointSections[i];
+                }
+              }
+            })(),
+            targetPointObjects = targetPointSection.querySelectorAll('.point__life');
+      for(let i_ = 1; i_ <= lostTargetPointNum; i_++) {
+        const targetPointObj = targetPointObjects[target.maxPoint - i_],
+              targetPointIcon = targetPointObj.querySelector('.point__icon');
+        targetPointObj.classList.add('point__life--used');
+        targetPointIcon.style.display = 'none';
+      }
+      // -- Redisplay last used time
+      const lastUsed = localStorage.getItem(target.lastUsed),
+            lastUsedObj = targetPointSection.querySelector('.point__last-used');
+      console.log(target.lastUsed);
+      lastUsedObj.innerText = lastUsed;
     }
-    // -- Reproduce last used time
-    const lastUsedTime = localStorage.getItem('usedTime'),
-          lastUsedObj = document.querySelector('.point__last-used');
-    lastUsedObj.innerText = lastUsedTime;
   } catch(e) {
     alert('localStrage未対応のブラウザのため、ポイントの使用状況が保存されません。');
     console.log('Error:' + e);
   }
-  // -- Hidden contents preview
+  // -- Preview hidden contents
   const pointSection = document.querySelector('.points');
   pointSection.classList.remove('points--hidden');
 
@@ -70,23 +101,31 @@
   /* User Interaction               */
   /* ------------------------------ */
   // -- Button function - Use point
-  const pointBtn = document.querySelector('.point__btn');
-  pointBtn.addEventListener('click', () => {
-    let life = document.querySelectorAll('.point__life:not(.point__life--used)');
-    if (life.length == 0) {
-      alert('残りポイントがありません。');
-      return;
-    }
-    let lastlife = life[life.length - 1],
-        lastlifeIcon = lastlife.querySelector('.point__icon');
-    lastlife.classList.add('point__life--used');
-    lastlifeIcon.style.display = 'none';
-    now = getNowDate();
-    const usedText = '前回は' + now.nowDate + 'に使用しました。',
-          lastUsed = document.querySelector('.point__last-used');
-    lastUsed.innerText = usedText;
-    localStorage.setItem('usedTime', usedText);
-    const restPoint = localStorage.getItem('restPoint') - 1;
-    localStorage.setItem('restPoint', restPoint);
-  });
+  const pointBtns = document.querySelectorAll('.point__btn'),
+        pointBtnsLen = pointBtns.length;
+  for(let i = 0; i < pointBtnsLen; i++) {
+    pointBtns[i].addEventListener('click', () => {
+      const targetPoint = document.querySelectorAll('.point')[i],
+            life = targetPoint.querySelectorAll('.point__life:not(.point__life--used)'),
+            lifeLen = life.length;
+      if (lifeLen == 0) {
+        alert('残りポイントがありません。');
+        return;
+      }
+      let lastlife = life[lifeLen - 1],
+          lastlifeIcon = lastlife.querySelector('.point__icon');
+      lastlife.classList.add('point__life--used');
+      lastlifeIcon.style.display = 'none';
+      now = getNowDate();
+      const usedText = '前回は' + now.nowDate + 'に使用しました。',
+            targetLastUsed = targetPoint.querySelector('.point__last-used'),
+            targetType = targetPoint.getAttribute('data-type'),
+            targetRestPoint = targetType + 'RestPoint',
+            targetUsedTime = targetType + 'LastUsed';
+      targetLastUsed.innerText = usedText;
+      localStorage.setItem(targetUsedTime, usedText);
+      const restPoint = localStorage.getItem(targetRestPoint) - 1;
+      localStorage.setItem(targetRestPoint, restPoint);
+    });
+  }
 }

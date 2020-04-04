@@ -86,7 +86,6 @@
       // -- Redisplay last used time
       const lastUsed = localStorage.getItem(target.lastUsed),
             lastUsedObj = targetPointSection.querySelector('.point__last-used');
-      console.log(target.lastUsed);
       lastUsedObj.innerText = lastUsed;
     }
   } catch(e) {

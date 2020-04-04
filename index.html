@@ -4,8 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>飲み会ポイント</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-  
+  <main role="main" class="points points--hidden">
+    <h1 class="headline-date">2000年0月</h1>
+    <section class="point" data-type="beer">
+      <h2 class="point__title">飲み会ポイント</h2>
+      <ul class="point__list">
+        <li class="point__life">
+          <img class="point__icon" src="./image/icon_beer.svg" alt="飲み会ポイントアイコン">
+        </li>
+        <li class="point__life">
+          <img class="point__icon" src="./image/icon_beer.svg" alt="飲み会ポイントアイコン">
+        </li>
+      </ul>
+      <div class="point__btn">使う</div>
+      <span class="point__last-used"></span>
+    </section>
+    <section class="point point--last" data-type="eatout">
+      <h2 class="point__title">外食ポイント</h2>
+      <ul class="point__list">
+        <li class="point__life">
+          <img class="point__icon" src="./image/icon_eatout.svg" alt="外食ポイントアイコン">
+        </li>
+        <li class="point__life">
+          <img class="point__icon" src="./image/icon_eatout.svg" alt="外食ポイントアイコン">
+        </li>
+        <li class="point__life">
+          <img class="point__icon" src="./image/icon_eatout.svg" alt="外食ポイントアイコン">
+        </li>
+        <li class="point__life">
+          <img class="point__icon" src="./image/icon_eatout.svg" alt="外食ポイントアイコン">
+        </li>
+      </ul>
+      <div class="point__btn">使う</div>
+      <span class="point__last-used"></span>
+    </section>
+    
+  </main>
+  <script type="text/javascript" src="./js/main.js"></script>
 </body>
 </html>
